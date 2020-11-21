@@ -15,11 +15,12 @@ jobs:
         dotnet-version: 3.1.301
     - name: Go to tests
       run: cd 'API.Test.Unit'
-    - name: Do
-      run: ls
     - name: Install dependencies
+      working-directory: ./API.Test.Unit
       run: dotnet restore
     - name: Build
+      working-directory: ./API.Test.Unit
       run: dotnet build --configuration Release --no-restore
     - name: Test
+      working-directory: ./API.Test.Unit
       run: dotnet test --no-restore --verbosity normal
