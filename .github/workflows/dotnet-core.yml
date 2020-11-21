@@ -13,10 +13,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: Do
-      run: ls
     - name: Go to tests
       run: cd 'API.Test.Unit'
+    - name: Do
+      run: ls
     - name: Install dependencies
       run: dotnet restore
     - name: Build
