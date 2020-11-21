@@ -16,7 +16,7 @@ jobs:
     - name: Do
       run: ls
     - name: Go to tests
-      run: cd 'API.tests.Unit'
+      run: cd 'API.Test.Unit'
     - name: Install dependencies
       run: dotnet restore
     - name: Build
