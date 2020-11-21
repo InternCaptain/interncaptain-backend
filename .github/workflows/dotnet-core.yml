@@ -1,0 +1,26 @@
+name: .NET Core
+
+on: [push, pull_request]    
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1
+    - name: Go to tests
+      run: cd 'API.Test.Unit'
+    - name: Install dependencies
+      working-directory: ./API.Test.Unit
+      run: dotnet restore
+    - name: Build
+      working-directory: ./API.Test.Unit
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      working-directory: ./API.Test.Unit
+      run: dotnet test --no-restore --verbosity normal
