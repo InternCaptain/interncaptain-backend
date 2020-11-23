@@ -5,11 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-rc.6"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
+        <PackageReference Include="AutoMapper" Version="10.1.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+        <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-rc.6" />
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.0.0-rc.6" />
+        <PackageReference Include="HotChocolate.Data" Version="11.0.0-rc.6" />
     </ItemGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\API.Models\API.Models.csproj"/>
+        <ProjectReference Include="..\API.Models\API.Models.csproj" />
     </ItemGroup>
     
 </Project>

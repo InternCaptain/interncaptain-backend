@@ -1,7 +1,20 @@
-﻿namespace API.GraphQL
+﻿using System.Linq;
+using API.Models;
+using HotChocolate;
+using HotChocolate.Data;
+using HotChocolate.Data.Filters;
+using HotChocolate.Types;
+
+namespace API.GraphQL
 {
     public class Query
     {
-        public string GetHello() => "Hello";
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<User> GetUsers([Service] ApiContext apiContext)
+        {
+            return apiContext.Users;
+        }
     }
 }
