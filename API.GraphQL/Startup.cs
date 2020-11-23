@@ -34,8 +34,6 @@ namespace API.GraphQL
                 .AddFiltering()
                 .AddSorting();
             
-            services.AddAuthorization();
-
             services.AddAutoMapper(typeof(Startup));
         }
 
@@ -47,10 +45,6 @@ namespace API.GraphQL
             }
 
             app.UseRouting();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapGraphQL(); });
         }
