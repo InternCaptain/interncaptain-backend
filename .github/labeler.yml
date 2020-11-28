@@ -1,0 +1,17 @@
+api:
+  - API.GraphQL/Query.cs
+  - API.GraphQL/Mutation.cs
+
+models:
+  - API.Models/**/*
+  - API.GraphQL/Migrations/*
+
+test:
+  - API.Test.Unit/**/*
+
+configuration:
+  - API.GraphQL/Startup.cs
+  - API.GraphQL/API.GraphQL.csproj
+
+workflows:
+  - .github/**/*
