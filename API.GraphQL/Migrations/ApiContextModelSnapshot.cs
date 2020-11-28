@@ -45,7 +45,7 @@ namespace API.GraphQL.Migrations
                     b.HasKey("Id")
                         .HasName("pk_users");
 
-                    b.ToTable("users", "users");
+                    b.ToTable("users", "ic_user");
                 });
 #pragma warning restore 612, 618
         }
