@@ -2,15 +2,17 @@
 using API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.GraphQL.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20201128145746_Setup")]
+    partial class Setup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,10 +43,6 @@ namespace API.GraphQL.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text")
                         .HasColumnName("password");
-
-                    b.Property<string>("ProfilePicture")
-                        .HasColumnType("text")
-                        .HasColumnName("profile_picture");
 
                     b.HasKey("Id")
                         .HasName("pk_users");
