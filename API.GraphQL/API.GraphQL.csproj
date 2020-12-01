@@ -5,15 +5,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="10.1.1" />
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-        <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-rc.6" />
-        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.0.0-rc.6" />
-        <PackageReference Include="HotChocolate.Data" Version="11.0.0-rc.6" />
+        <!-- AutoMapper -->
+        <PackageReference Include="AutoMapper" Version="10.1.1"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0"/>
+
+        <!-- GraphQL -->
+        <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.0-rc.0"/>
+        <PackageReference Include="HotChocolate.Types.Filters" Version="10.4.0-rc.0"/>
+        <PackageReference Include="HotChocolate.Types.Sorting" Version="10.4.0-rc.0"/>
+        <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="10.4.0-rc.0"/>
+        <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.4.0-rc.0"/>
+        <PackageReference Include="HotChocolate.AspNetCore.Voyager" Version="10.4.0-rc.0"/>
+
+        <!-- JWT -->
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
     </ItemGroup>
-    
+
     <ItemGroup>
-        <ProjectReference Include="..\API.Models\API.Models.csproj" />
+        <ProjectReference Include="..\API.Models\API.Models.csproj"/>
     </ItemGroup>
-    
+
 </Project>
