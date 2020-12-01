@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.GraphQL.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20201128145942_UserProfilePicture")]
-    partial class UserProfilePicture
+    [Migration("20201201013106_Setup")]
+    partial class Setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

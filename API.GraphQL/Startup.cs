@@ -30,7 +30,7 @@ namespace API.GraphQL
                 options.UseNpgsql(Configuration.GetConnectionString("postgres"),
                         b => b.MigrationsAssembly("API.GraphQL"))
                     .UseLoggerFactory(provider.GetRequiredService<ILoggerFactory>())
-                    .UseSnakeCaseNamingConvention());
+                    .UseSnakeCaseNamingConvention(), ServiceLifetime.Scoped);
 
             services
                 .AddInMemorySubscriptions()
@@ -38,6 +38,7 @@ namespace API.GraphQL
                 new SchemaBuilder()
                     .AddQueryType<Query>()
                     .AddMutationType<Mutation>()
+                    .AddSubscriptionType<Subscription>()
             );
 
             services.AddAutoMapper(typeof(Startup));
