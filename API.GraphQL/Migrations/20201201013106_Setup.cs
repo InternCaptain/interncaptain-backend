@@ -20,7 +20,8 @@ namespace API.GraphQL.Migrations
                     first_name = table.Column<string>(type: "text", nullable: true),
                     last_name = table.Column<string>(type: "text", nullable: true),
                     email = table.Column<string>(type: "text", nullable: true),
-                    password = table.Column<string>(type: "text", nullable: true)
+                    password = table.Column<string>(type: "text", nullable: true),
+                    profile_picture = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
