@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using API.Models;
 using HotChocolate;
-using HotChocolate.Data;
 using HotChocolate.Types;
+using HotChocolate.Types.Relay;
 
 namespace API.GraphQL
 {
