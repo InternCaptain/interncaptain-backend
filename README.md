@@ -1,5 +1,7 @@
 # InternCaptain
 
+![.NET Core](https://github.com/InternCaptain/InternCaptain/workflows/.NET%20Core/badge.svg?branch=main)
+
 ## GraphQL:
 Use the API.GraphQL.Query class.
 All queries must start with __Get__.
