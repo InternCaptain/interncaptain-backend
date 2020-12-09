@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using API.Models;
 using HotChocolate;
 using HotChocolate.Subscriptions;
-using HotChocolate.Types;
+using HotChocolate.Types;   
 
 namespace API.GraphQL
 {

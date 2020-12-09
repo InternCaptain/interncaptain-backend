@@ -2,9 +2,9 @@
 
 namespace API.Models
 {
-    public class ApiContext: DbContext
+    public class APIContext: DbContext
     {
-        public ApiContext(DbContextOptions options) : base(options)
+        public APIContext(DbContextOptions options) : base(options)
         {
         }
 

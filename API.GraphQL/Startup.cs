@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.Models;
 using AutoMapper;
 using HotChocolate;
@@ -5,15 +6,15 @@ using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace API.GraphQL
 {
-    public class Startup
+    public partial class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -24,22 +25,36 @@ namespace API.GraphQL
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureAuthenticationServices(services);
+
             services.AddCors();
-            
-            services.AddDbContext<ApiContext>((provider, options) =>
-                options.UseNpgsql(Configuration.GetConnectionString("postgres"),
-                        b => b.MigrationsAssembly("API.GraphQL"))
-                    .UseLoggerFactory(provider.GetRequiredService<ILoggerFactory>())
-                    .UseSnakeCaseNamingConvention(), ServiceLifetime.Scoped);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddPooledDbContextFactory<APIContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("postgres"), builder =>
+                        builder.MigrationsAssembly("Api.GraphQL"))
+                    .UseSnakeCaseNamingConvention(), 10);
 
             services
                 .AddInMemorySubscriptions()
                 .AddGraphQL(
-                new SchemaBuilder()
-                    .AddQueryType<Query>()
-                    .AddMutationType<Mutation>()
-                    .AddSubscriptionType<Subscription>()
-            );
+                    new SchemaBuilder()
+                        .AddQueryType<Query>()
+                        .AddMutationType<Mutation>()
+                        .AddSubscriptionType<Subscription>()
+                        .AddAuthorizeDirectiveType()
+                );
+
+            services.AddQueryRequestInterceptor(async (context, builder, ct) =>
+            {
+                if (context.User.Identity.IsAuthenticated)
+                {
+                    var currentUser = context.User.FindFirst(ClaimTypes.Name).Value;
+
+                    builder.AddProperty("currentUser", currentUser);
+                }
+            });
 
             services.AddAutoMapper(typeof(Startup));
         }
@@ -58,12 +73,13 @@ namespace API.GraphQL
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseWebSockets();
-            
+
             app.UseGraphQL()
                 .UsePlayground()
                 .UseVoyager();
-
         }
     }
 }
