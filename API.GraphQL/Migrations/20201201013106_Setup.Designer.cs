@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.GraphQL.Migrations
 {
-    [DbContext(typeof(ApiContext))]
+    [DbContext(typeof(APIContext))]
     [Migration("20201201013106_Setup")]
     partial class Setup
     {

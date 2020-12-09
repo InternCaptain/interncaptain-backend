@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.GraphQL.Migrations
 {
-    [DbContext(typeof(ApiContext))]
+    [DbContext(typeof(APIContext))]
     partial class ApiContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
