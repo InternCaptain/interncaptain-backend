@@ -1,7 +1,5 @@
 api:
-  - API.GraphQL/Query.cs
-  - API.GraphQL/Mutation.cs
-  - API.GraphQL/Subscription.cs
+  - API.GraphQL/Types/**/*
 
 models:
   - API.Models/**/*

@@ -8,6 +8,7 @@
         <!-- AutoMapper -->
         <PackageReference Include="AutoMapper" Version="10.1.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
 
         <!-- GraphQL -->
         <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.0-rc.0" />
