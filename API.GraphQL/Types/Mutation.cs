@@ -23,6 +23,7 @@ namespace API.GraphQL
             {
                 throw new QueryException(
                     ErrorBuilder.New()
+                        .SetPath(Path.New("email"))
                         .SetMessage("The email mustn't be empty.")
                         .SetCode("EMAIL_EMPTY")
                         .Build());
@@ -32,6 +33,7 @@ namespace API.GraphQL
             {
                 throw new QueryException(
                     ErrorBuilder.New()
+                        .SetPath(Path.New("password"))
                         .SetMessage("The password mustn't be empty.")
                         .SetCode("PASSWORD_EMPTY")
                         .Build());
@@ -41,12 +43,13 @@ namespace API.GraphQL
                 from user in context.Users
                 where user.Email == input.Email
                 select user
-            ).Single();
+            ).SingleOrDefault();
 
             if (userFromDatabase is null)
             {
                 throw new QueryException(
                     ErrorBuilder.New()
+                        .SetPath(Path.New("email"))
                         .SetMessage("The specified username is invalid.")
                         .SetCode("INVALID_EMAIL")
                         .Build());
@@ -56,6 +59,7 @@ namespace API.GraphQL
             {
                 throw new QueryException(
                     ErrorBuilder.New()
+                        .SetPath(Path.New("password"))
                         .SetMessage("The specified password is invalid.")
                         .SetCode("INVALID_PASSWORD")
                         .Build());
@@ -63,9 +67,8 @@ namespace API.GraphQL
 
             var identity = new ClaimsIdentity(new[]
             {
-                new Claim("sub", userFromDatabase.Email),
+                new Claim(ClaimTypes.Name, userFromDatabase.Email),
                 new Claim(ClaimTypes.Role, "user"),
-                new Claim(ClaimTypes.Role, "wizard")
             });
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -82,7 +85,11 @@ namespace API.GraphQL
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             string tokenString = tokenHandler.WriteToken(token);
 
-            return new LoginOutput {Token = tokenString};
+            return new LoginOutput
+            {
+                Token = tokenString,
+                CurrentUser = userFromDatabase
+            };
         }
 
         public async Task<User> CreateUser(
@@ -115,5 +122,7 @@ namespace API.GraphQL
     public class LoginOutput
     {
         public string Token { get; set; }
+        
+        public User CurrentUser { get; set; }
     }
 }
