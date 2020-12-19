@@ -4,7 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Models;
+using AutoMapper;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
@@ -15,53 +17,53 @@ namespace API.GraphQL
     public class Mutation
     {
         public async Task<LoginOutput> LoginAsync(
-            LoginInput input,
+            string email, string password,
             [Service] IDbContextFactory<APIContext> factory)
         {
-            var context = factory.CreateDbContext();
-            if (string.IsNullOrEmpty(input.Email))
+            var dbContext = factory.CreateDbContext();
+            if (string.IsNullOrEmpty(email))
             {
                 throw new QueryException(
                     ErrorBuilder.New()
                         .SetPath(Path.New("email"))
-                        .SetMessage("The email mustn't be empty.")
+                        .SetMessage("Email should not be empty")
                         .SetCode("EMAIL_EMPTY")
                         .Build());
             }
 
-            if (string.IsNullOrEmpty(input.Password))
+            if (string.IsNullOrEmpty(password))
             {
                 throw new QueryException(
                     ErrorBuilder.New()
                         .SetPath(Path.New("password"))
-                        .SetMessage("The password mustn't be empty.")
+                        .SetMessage("Password should not be empty")
                         .SetCode("PASSWORD_EMPTY")
                         .Build());
             }
 
-            User userFromDatabase = (
-                from user in context.Users
-                where user.Email == input.Email
+            User userFromDatabase = await (
+                from user in dbContext.Users
+                where user.Email == email
                 select user
-            ).SingleOrDefault();
+            ).SingleOrDefaultAsync();
 
             if (userFromDatabase is null)
             {
                 throw new QueryException(
                     ErrorBuilder.New()
                         .SetPath(Path.New("email"))
-                        .SetMessage("The specified username is invalid.")
-                        .SetCode("INVALID_EMAIL")
+                        .SetMessage("Email should not be empty")
+                        .SetCode("EMAIL_DOES_NOT_EXIST")
                         .Build());
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(input.Password, userFromDatabase.Password))
+            if (!BCrypt.Net.BCrypt.Verify(password, userFromDatabase.Password))
             {
                 throw new QueryException(
                     ErrorBuilder.New()
                         .SetPath(Path.New("password"))
-                        .SetMessage("The specified password is invalid.")
-                        .SetCode("INVALID_PASSWORD")
+                        .SetMessage("Password should not be empty")
+                        .SetCode("PASSWORD_DOES_NOT_MATCH")
                         .Build());
             }
 
@@ -92,37 +94,56 @@ namespace API.GraphQL
             };
         }
 
-        public async Task<User> CreateUser(
-            User user,
+        public async Task<User> RegisterAsync(
+            UserForCreate input,
+            [Service] IMapper mapper,
             [Service] IDbContextFactory<APIContext> factory,
             [Service] ITopicEventSender eventSender)
         {
-            var apiContext = factory.CreateDbContext();
+            var dbContext = factory.CreateDbContext();
 
-            user.Id = 0;
+            if (string.IsNullOrEmpty(input.Email))
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetPath(Path.New("email"))
+                        .SetMessage("Email should not be empty")
+                        .SetCode("EMAIL_EMPTY")
+                        .Build());
+            }
 
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            if (string.IsNullOrEmpty(input.Password))
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetPath(Path.New("password"))
+                        .SetMessage("Password should not be empty")
+                        .SetCode("PASSWORD_EMPTY")
+                        .Build());
+            }
 
-            var inDatabase = apiContext.Users.Add(user).Entity;
-            await apiContext.SaveChangesAsync();
+            int count = await dbContext.Users.CountAsync(u => u.Email == input.Email);
+
+            if (count > 0)
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetPath(Path.New("email"))
+                        .SetMessage("Email already used")
+                        .SetCode("EMAIL_ALREADY_EXISTS")
+                        .Build());
+            }
+
+            User user = mapper.Map<UserForCreate, User>(input);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(input.Password);
+
+            var inDatabase = (await dbContext.Users.AddAsync(user)).Entity;
+            await dbContext.SaveChangesAsync();
 
             await eventSender.SendAsync("users", inDatabase)
                 .ConfigureAwait(false);
 
             return inDatabase;
         }
-    }
-
-    public class LoginInput
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class LoginOutput
-    {
-        public string Token { get; set; }
-        
-        public User CurrentUser { get; set; }
     }
 }

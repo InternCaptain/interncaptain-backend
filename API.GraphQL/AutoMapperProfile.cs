@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using API.Models;
+using AutoMapper;
 
 namespace API.GraphQL
 {
@@ -6,9 +7,10 @@ namespace API.GraphQL
     {
         public AutoMapperProfile()
         {
-            CreateMap<string, string>()
+            CreateMap<UserForCreate, User>()
                 .ForAllMembers(options =>
                     options.Condition((src, dest, srcMember) => srcMember != null));
+
         }
     }
 }
