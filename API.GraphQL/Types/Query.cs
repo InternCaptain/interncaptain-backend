@@ -22,6 +22,21 @@ namespace API.GraphQL
             return factory.CreateDbContext().Users;
         }
 
+        [Authorize]
+        public async Task<User> GetCurrentUserAsync(
+            [GlobalState] string currentUser,
+            [Service] IDbContextFactory<APIContext> factory)
+        {
+            return factory.CreateDbContext().Users.Single(user => user.Email == currentUser);
+        }
+
+        [Authorize]
+        public IEnumerable<string> GetCurrentUserRoles(
+            [Service] IHttpContextAccessor httpContext)
+        {
+            return from claim in httpContext.HttpContext.User.FindAll(ClaimTypes.Role) select claim.Value;
+        }
+
         [UsePaging]
         [UseFiltering]
         [UseSorting]
@@ -38,19 +53,12 @@ namespace API.GraphQL
             return factory.CreateDbContext().Companies;
         }
 
-        [Authorize]
-        public async Task<User> GetCurrentUserAsync(
-            [GlobalState] string currentUser,
-            [Service] IDbContextFactory<APIContext> factory)
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public async Task<IQueryable<Application>> GetApplicationsAsync([Service] IDbContextFactory<APIContext> factory)
         {
-            return factory.CreateDbContext().Users.Single(user => user.Email == currentUser);
-        }
-
-        [Authorize]
-        public IEnumerable<string> GetCurrentUserRoles(
-            [Service] IHttpContextAccessor httpContext)
-        {
-            return from claim in httpContext.HttpContext.User.FindAll(ClaimTypes.Role) select claim.Value;
+            return factory.CreateDbContext().Applications;
         }
     }
 }

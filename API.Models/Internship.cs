@@ -11,6 +11,7 @@ namespace API.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public long CompanyId { get; set; }
+        public long RecruiterId { get; set; }
         public string PositionName { get; set; }
         public Domain Domain { get; set; }
         public string Description { get; set; }
