@@ -33,7 +33,7 @@ namespace API.GraphQL
 
             services.AddPooledDbContextFactory<APIContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("postgres"), builder =>
-                        builder.MigrationsAssembly("Api.GraphQL"))
+                        builder.MigrationsAssembly("API.GraphQL"))
                     .UseSnakeCaseNamingConvention(), 10);
 
             services

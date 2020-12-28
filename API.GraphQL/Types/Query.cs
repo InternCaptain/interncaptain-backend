@@ -22,6 +22,22 @@ namespace API.GraphQL
             return factory.CreateDbContext().Users;
         }
 
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public async Task<IQueryable<Internship>> GetInternshipsAsync([Service] IDbContextFactory<APIContext> factory)
+        {
+            return factory.CreateDbContext().Internships;
+        }
+
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public async Task<IQueryable<Company>> GetCompaniesAsync([Service] IDbContextFactory<APIContext> factory)
+        {
+            return factory.CreateDbContext().Companies;
+        }
+
         [Authorize]
         public async Task<User> GetCurrentUserAsync(
             [GlobalState] string currentUser,

@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.GraphQL.Migrations
 {
     [DbContext(typeof(APIContext))]
-    [Migration("20201201013106_Setup")]
-    partial class Setup
+    [Migration("20201228122117_InitialSetup")]
+    partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,6 +47,10 @@ namespace API.GraphQL.Migrations
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("text")
                         .HasColumnName("profile_picture");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer")
+                        .HasColumnName("role");
 
                     b.HasKey("Id")
                         .HasName("pk_users");
