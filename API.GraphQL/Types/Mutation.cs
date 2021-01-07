@@ -52,7 +52,7 @@ namespace API.GraphQL
                 throw new QueryException(
                     ErrorBuilder.New()
                         .SetPath(Path.New("email"))
-                        .SetMessage("Email should not be empty")
+                        .SetMessage("There is no associated account for this email")
                         .SetCode("EMAIL_DOES_NOT_EXIST")
                         .Build());
             }
@@ -62,7 +62,7 @@ namespace API.GraphQL
                 throw new QueryException(
                     ErrorBuilder.New()
                         .SetPath(Path.New("password"))
-                        .SetMessage("Password should not be empty")
+                        .SetMessage("The password is wrong")
                         .SetCode("PASSWORD_DOES_NOT_MATCH")
                         .Build());
             }
