@@ -1,19 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using API.Models;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.GraphQL
 {
     public class Query
     {
+
         [UsePaging]
         [UseFiltering]
         [UseSorting]
@@ -28,13 +26,6 @@ namespace API.GraphQL
             [Service] IDbContextFactory<APIContext> factory)
         {
             return factory.CreateDbContext().Users.Single(user => user.Email == currentUser);
-        }
-
-        [Authorize]
-        public IEnumerable<string> GetCurrentUserRoles(
-            [Service] IHttpContextAccessor httpContext)
-        {
-            return from claim in httpContext.HttpContext.User.FindAll(ClaimTypes.Role) select claim.Value;
         }
 
         [UsePaging]
