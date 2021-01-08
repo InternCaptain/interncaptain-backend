@@ -46,6 +46,7 @@ namespace API.GraphQL
         }
 
         [UsePaging]
+        [UseSelection]
         [UseFiltering]
         [UseSorting]
         public async Task<IQueryable<Application>> GetApplicationsAsync([Service] IDbContextFactory<APIContext> factory)

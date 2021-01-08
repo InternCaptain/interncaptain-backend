@@ -1,10 +1,11 @@
-﻿using API.Models.Enums;
+﻿using System;
+using API.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
 {
-    [Table("internships", Schema = "ic_internship")]
+    [Table("internships")]
     public class Internship
     {
         [Key]
@@ -13,7 +14,7 @@ namespace API.Models
         
         public virtual Company Company { get; set; }
         
-        public long RecruiterId { get; set; }
+        public Nullable<long> RecruiterId { get; set; }
         public virtual User Recruiter { get; set; }
         
         public string PositionName { get; set; }

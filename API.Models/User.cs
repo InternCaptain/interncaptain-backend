@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
 {
-    [Table("users", Schema = "ic_user")]
+    [Table("users")]
     public class User
     {
         [Key]
