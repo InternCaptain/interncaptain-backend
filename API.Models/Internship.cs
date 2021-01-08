@@ -10,7 +10,7 @@ namespace API.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public Company Company { get; set; }
+        public virtual Company Company { get; set; }
         public long RecruiterId { get; set; }
         public string PositionName { get; set; }
         public Domain Domain { get; set; }

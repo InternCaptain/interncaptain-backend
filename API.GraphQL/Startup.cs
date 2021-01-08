@@ -4,6 +4,7 @@ using AutoMapper;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Voyager;
+using HotChocolate.Execution.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -44,6 +45,7 @@ namespace API.GraphQL
                         .AddMutationType<Mutation>()
                         .AddSubscriptionType<Subscription>()
                         .AddAuthorizeDirectiveType()
+                        .Create()
                 );
 
             services.AddQueryRequestInterceptor(async (context, builder, ct) =>
