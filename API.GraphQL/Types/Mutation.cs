@@ -1,16 +1,16 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using API.Models;
+﻿using API.Models;
+using API.Models.Enums;
 using AutoMapper;
 using HotChocolate;
-using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace API.GraphQL
 {
@@ -144,6 +144,71 @@ namespace API.GraphQL
                 .ConfigureAwait(false);
 
             return inDatabase;
+        }
+
+        public async Task<Application> UpdateApplicationStatusAsync(
+            long applicationId, ApplicationStatus newStatus,
+            [Service] IDbContextFactory<APIContext> factory)
+        {
+            var dbContext = factory.CreateDbContext();
+
+            var application = await dbContext.Applications.FirstOrDefaultAsync(application => application.Id == applicationId);
+
+            if (application == null)
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetPath(Path.New("applicationId"))
+                        .SetMessage("Application not found")
+                        .SetCode("APPLICATION_NOT_FOUND")
+                        .Build());
+
+            application.Status = newStatus;
+
+            dbContext.Update(application);
+            await dbContext.SaveChangesAsync();
+
+            return application;
+        }
+
+        public async Task<Application> AddApplication(
+            long internshipId, long studentId,
+            [Service] IDbContextFactory<APIContext> factory)
+        {
+            var dbContext = factory.CreateDbContext();
+
+            //TODO: verify if application exists
+
+            var internship = await dbContext.Internships.FirstOrDefaultAsync(internship => internship.Id == internshipId);
+            if (internship == null)
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetPath(Path.New("internship"))
+                        .SetMessage("Internship not found")
+                        .SetCode("INTERNSHIP_NOT_FOUND")
+                        .Build());
+
+            var student = await dbContext.Users.FirstOrDefaultAsync(user => user.Id == studentId);
+            if (student == null)
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetPath(Path.New("student"))
+                        .SetMessage("Student not found")
+                        .SetCode("STUDENT_NOT_FOUND")
+                        .Build());
+
+            var application = new Application
+            {
+                InternshipId = internshipId,
+                Internship = internship,
+                StudentId = studentId,
+                Student = student,
+                Status = ApplicationStatus.Pending
+            };
+
+            await dbContext.Applications.AddAsync(application);
+            await dbContext.SaveChangesAsync();
+
+            return application;
         }
     }
 }
