@@ -2,13 +2,13 @@
 {
     public enum Domain
     {
-        ComputerScience = 1,
-        Psychology,
-        Medicine,
-        Pharmacy,
-        Economics,
-        Biology,
-        History,
-        Others
+        COMPUTER_SCIENCE = 1,
+        PSYCHOLOGY,
+        MEDICINE,
+        PHARMACY,
+        ECONOMICS,
+        BIOLOGY,
+        HISTORY,
+        OTHERS
     }
 }
