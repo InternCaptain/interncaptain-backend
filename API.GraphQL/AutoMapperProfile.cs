@@ -1,9 +1,8 @@
 ﻿using API.Models;
-using AutoMapper;
 
 namespace API.GraphQL
 {
-    public class AutoMapperProfile : Profile
+    public class AutoMapperProfile : AutoMapper.Profile
     {
         public AutoMapperProfile()
         {

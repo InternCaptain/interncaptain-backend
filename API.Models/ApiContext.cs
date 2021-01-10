@@ -12,5 +12,6 @@ namespace API.Models
         public DbSet<Internship> Internships { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
     }
 }

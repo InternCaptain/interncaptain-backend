@@ -11,7 +11,6 @@ namespace API.GraphQL
 {
     public class Query
     {
-
         [UsePaging]
         [UseFiltering]
         [UseSorting]
@@ -31,12 +30,12 @@ namespace API.GraphQL
         [UsePaging]
         [UseSelection]
         [UseFiltering]
-        [UseSorting]
+        [UseSorting]m
         public async Task<IQueryable<Internship>> GetInternships([Service] IDbContextFactory<APIContext> factory)
         {
             return factory.CreateDbContext().Internships;
         }
-        
+
         [UsePaging]
         [UseFiltering]
         [UseSorting]
@@ -53,5 +52,14 @@ namespace API.GraphQL
         {
             return factory.CreateDbContext().Applications;
         }
+
+        [UseSelection]
+        [UseFiltering]
+        public IQueryable<Profile> GetProfiles(
+            [Service] IDbContextFactory<APIContext> factory)
+        {
+            return factory.CreateDbContext().Profiles;
+        }
+        
     }
 }

@@ -12,10 +12,10 @@ namespace API.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         
-        public Nullable<long> InternshipId { get; set; }
+        public long InternshipId { get; set; }
         public virtual Internship Internship { get; set; }
         
-        public Nullable<long> StudentId { get; set; }
+        public long StudentId { get; set; }
         public virtual User Student { get; set; }
         
         public ApplicationStatus Status { get; set; }
