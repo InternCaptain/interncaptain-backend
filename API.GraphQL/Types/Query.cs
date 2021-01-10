@@ -30,7 +30,7 @@ namespace API.GraphQL
         [UsePaging]
         [UseSelection]
         [UseFiltering]
-        [UseSorting]m
+        [UseSorting]
         public async Task<IQueryable<Internship>> GetInternships([Service] IDbContextFactory<APIContext> factory)
         {
             return factory.CreateDbContext().Internships;
