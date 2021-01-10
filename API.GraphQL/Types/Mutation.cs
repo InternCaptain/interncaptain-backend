@@ -176,7 +176,14 @@ namespace API.GraphQL
         {
             var dbContext = factory.CreateDbContext();
 
-            //TODO: verify if application exists
+            var existingApplication = await dbContext.Applications.FirstOrDefaultAsync(application => application.InternshipId == internshipId && application.StudentId == studentId);
+            if (existingApplication != null)
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetPath(Path.New("internship"))
+                        .SetMessage("Already existing application")
+                        .SetCode("ALREADY_EXISTING_APPLICATION")
+                        .Build());
 
             var internship = await dbContext.Internships.FirstOrDefaultAsync(internship => internship.Id == internshipId);
             if (internship == null)
