@@ -12,6 +12,7 @@ namespace API.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         
+        public Nullable<long> CompanyId { get; set; }
         public virtual Company Company { get; set; }
         
         public Nullable<long> RecruiterId { get; set; }
